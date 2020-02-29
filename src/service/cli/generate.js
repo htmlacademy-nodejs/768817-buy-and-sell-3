@@ -7,8 +7,9 @@ const {
   shuffle,
 } = require(`../../utils`);
 
-const DEFAULT_COUNT = 1;
+const DEFAULT_AMOUNT = 1;
 const FILE_NAME = `mocks.json`;
+const MAX_OFFERS_COUNT = 1000;
 
 const TITLES = [
   `Продам книги Стивена Кинга`,
@@ -73,14 +74,19 @@ module.exports = {
   name: `--generate`,
   run(args) {
     const [count] = args;
-    const countOffer = Number.parseInt(count, 10) || DEFAULT_COUNT;
+    if (count > MAX_OFFERS_COUNT) {
+      console.error(`Не больше 1000 объявлений`);
+      process.exit(1);
+    }
+    const countOffer = Number.parseInt(count, 10) || DEFAULT_AMOUNT;
     const content = JSON.stringify(generateOffers(countOffer));
     fs.writeFile(FILE_NAME, content, (err) => {
       if (err) {
-        return console.error(`Can't write data to file...`);
+        console.error(`Can't write data to file...`);
+        process.exit(1);
       }
-
-      return console.info(`Operation success. File created.`);
+      console.info(`Operation success. File created.`);
+      return process.exit(0);
     });
   }
 };
