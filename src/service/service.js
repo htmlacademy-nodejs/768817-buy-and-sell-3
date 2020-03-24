@@ -9,7 +9,6 @@ const ExitCode = {
   success: 0,
 };
 
-
 const userArguments = process.argv.slice(USER_ARGV_INDEX);
 const [userCommand] = userArguments;
 
