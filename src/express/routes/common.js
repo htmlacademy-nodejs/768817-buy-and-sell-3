@@ -4,9 +4,9 @@ const {Router} = require(`express`);
 
 const commonRouter = new Router();
 
-commonRouter.get(`/`, (req, res) => res.send(`/`));
-commonRouter.get(`/search`, (req, res) => res.send(`/search`));
-commonRouter.get(`/register`, (req, res) => res.send(`/register`));
-commonRouter.get(`/login`, (req, res) => res.send(`/login`));
+commonRouter.get(`/`, (req, res) => res.render(`main`, {}));
+commonRouter.get(`/search`, (req, res) => res.render(`search-result`));
+commonRouter.get(`/register`, (req, res) => res.render(`sign-up`));
+commonRouter.get(`/login`, (req, res) => res.render(`login`));
 
 module.exports = commonRouter;
