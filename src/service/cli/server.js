@@ -1,10 +1,13 @@
 "use strict";
 
-const fs = require(`fs`).promises;
 const express = require(`express`);
+const offersRouter = require(`./routes/offers`);
+const {readContent} = require(`../../utils`);
+const {FILE_CATEGORIES_PATH} = require(`../../constants`);
+const {getMocks} = require(`../../utils`);
+const {keys, includes} = require(`ramda`);
 
 const DEFAULT_PORT = 3000;
-const FILENAME = `mocks.json`;
 const HttpCode = {
   OK: 200,
   NOT_FOUND: 404,
@@ -16,13 +19,32 @@ const HttpCode = {
 const app = express();
 
 app.use(express.json());
-app.get(`/offers`, async (req, res) => {
+app.use(`/offers`, offersRouter);
+
+app.get(`/categories`, async (req, res) => {
   try {
-    const content = await fs.readFile(FILENAME);
-    const mocks = JSON.parse(content);
-    res.json(mocks);
+    const categories = await readContent(FILE_CATEGORIES_PATH);
+    return res.status(200).json(categories);
   } catch (err) {
-    res.json([]);
+    return res.status(400).json([]);
+  }
+});
+
+app.get(`/search`, async (req, res) => {
+  try {
+    const mocks = await getMocks();
+    const queryParams = req.query;
+    const queryKeys = keys(queryParams);
+
+    let filteredMocks = mocks;
+    for (let i = 0; i < queryKeys.length; i++) {
+      let a = filteredMocks;
+      let currentParam = queryKeys[i];
+      filteredMocks = a.filter((item) => includes(queryParams[currentParam], item[currentParam]));
+    }
+    return res.status(200).json(filteredMocks);
+  } catch (err) {
+    return res.status(400).json(`try again`);
   }
 });
 

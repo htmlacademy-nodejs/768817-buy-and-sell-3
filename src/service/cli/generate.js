@@ -2,18 +2,19 @@
 
 const fs = require(`fs`).promises;
 const chalk = require(`chalk`);
+const {nanoid} = require(`nanoid`);
+const {getRandomInt, shuffle, readContent} = require(`../../utils`);
 const {
-  getRandomInt,
-  shuffle,
-} = require(`../../utils`);
+  FILE_CATEGORIES_PATH,
+  FILE_COMMENTS_PATH,
+  FILE_SENTENCES_PATH,
+  FILE_TITLE_PATH
+} = require(`../../constants`);
 
+const ID_LENGTH = 6;
 const DEFAULT_AMOUNT = 1;
 const FILE_NAME = `mocks.json`;
 const MAX_OFFERS_COUNT = 1000;
-
-const FILE_TITLE_PATH = `./src/data/titles.txt`;
-const FILE_SENTENCES_PATH = `./src/data/sentences.txt`;
-const FILE_CATEGORIES_PATH = `./src/data/categories.txt`;
 
 const OfferType = {
   offer: `offer`,
@@ -32,26 +33,23 @@ const PictureRestrict = {
 };
 
 const getPictureFileName = (number) => number > 10 ? `item${number}.jpg` : `item0${number}.jpg`;
+const getComment = (comments) => {
+  const count = getRandomInt(0, comments.length - 1);
+  return shuffle(comments).slice(1, count).join(` `);
+};
 
-const generateOffers = (count, titles, categories, sentences) => (
+const generateOffers = (count, titles, categories, sentences, comments) => (
   Array(count).fill({}).map(() => ({
+    id: nanoid(ID_LENGTH),
     category: [categories[getRandomInt(0, categories.length - 1)]],
     description: shuffle(sentences).slice(1, 5).join(` `),
     picture: getPictureFileName(getRandomInt(PictureRestrict.min, PictureRestrict.max)),
     title: titles[getRandomInt(0, titles.length - 1)],
     type: Object.keys(OfferType)[Math.floor(Math.random() * Object.keys(OfferType).length)],
     sum: getRandomInt(SumRestrict.min, SumRestrict.max),
+    comments: Array(getRandomInt(0, 3)).fill({}).map(() => ({id: nanoid(ID_LENGTH), text: getComment(comments)}))
   }))
 );
-
-const readContent = async (filePath) => {
-  try {
-    const content = await fs.readFile(filePath, `utf8`);
-    return content.split(`\n`);
-  } catch (err) {
-    return console.log(err);
-  }
-};
 
 module.exports = {
   name: `--generate`,
@@ -64,8 +62,9 @@ module.exports = {
     const titles = await readContent(FILE_TITLE_PATH);
     const sentences = await readContent(FILE_SENTENCES_PATH);
     const categories = await readContent(FILE_CATEGORIES_PATH);
+    const comments = await readContent(FILE_COMMENTS_PATH);
     const countOffer = Number.parseInt(count, 10) || DEFAULT_AMOUNT;
-    const content = JSON.stringify(generateOffers(countOffer, titles, categories, sentences));
+    const content = JSON.stringify(generateOffers(countOffer, titles, categories, sentences, comments));
     try {
       await fs.writeFile(FILE_NAME, content);
       console.info(chalk.green(`Operation success. File created.`));
