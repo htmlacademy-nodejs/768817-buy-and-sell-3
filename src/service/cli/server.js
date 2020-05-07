@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 const express = require(`express`);
 const offersRouter = require(`./routes/offers`);
@@ -19,9 +19,9 @@ const HttpCode = {
 const app = express();
 
 app.use(express.json());
-app.use(`/offers`, offersRouter);
+app.use(`/api/offers`, offersRouter);
 
-app.get(`/categories`, async (req, res) => {
+app.get(`/api/categories`, async (req, res) => {
   try {
     const categories = await readContent(FILE_CATEGORIES_PATH);
     return res.status(200).json(categories);
@@ -30,7 +30,7 @@ app.get(`/categories`, async (req, res) => {
   }
 });
 
-app.get(`/search`, async (req, res) => {
+app.get(`/api/search`, async (req, res) => {
   try {
     const mocks = await getMocks();
     const queryParams = req.query;
