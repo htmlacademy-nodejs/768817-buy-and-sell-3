@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 const {Router} = require(`express`);
 const offersRouter = new Router();

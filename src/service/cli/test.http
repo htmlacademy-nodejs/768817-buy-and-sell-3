@@ -1,0 +1,43 @@
+POST http://localhost:3000/api/offers HTTP/1.1
+content-type: application/json
+
+{
+    "category": "sample",
+    "description": "test",
+    "title": "test1",
+    "type": "test2",
+    "sum": 111
+}
+
+###
+PUT http://localhost:3000/api/offers/2 HTTP/1.1
+content-type: application/json
+
+{
+    "type": "test4"
+}
+
+###
+DELETE http://localhost:3000/api/offers/2 HTTP/1.1
+
+###
+GET http://localhost:3000/api/offers/NsTrpE/comments 
+
+###
+DELETE http://localhost:3000/api/offers/1u3ZSQ/comments/gJxMU
+
+###
+POST http://localhost:3000/api/offers/1u3ZSQ/comments HTTP/1.1
+content-type: application/json
+
+{
+    "text": "sample"
+}
+
+###
+get http://localhost:3000/api/categories
+
+###
+get http://localhost:3000/api/search?type=sale HTTP/1.1
+content-type: application/json
+
