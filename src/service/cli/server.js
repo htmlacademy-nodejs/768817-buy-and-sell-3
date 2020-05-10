@@ -1,20 +1,13 @@
 'use strict';
 
 const express = require(`express`);
-const offersRouter = require(`./routes/offers`);
-const {readContent} = require(`../../utils`);
-const {FILE_CATEGORIES_PATH} = require(`../../constants`);
-const {getMocks} = require(`../../utils`);
 const {keys, includes} = require(`ramda`);
 
+const offersRouter = require(`./routes/offers`);
+const {readContent, getMocks} = require(`../../utils`);
+const {FILE_CATEGORIES_PATH, HttpCodes} = require(`../../constants`);
+
 const DEFAULT_PORT = 3000;
-const HttpCode = {
-  OK: 200,
-  NOT_FOUND: 404,
-  INTERNAL_SERVER_ERROR: 500,
-  FORBIDDEN: 403,
-  UNAUTHORIZED: 401,
-};
 
 const app = express();
 
@@ -48,18 +41,19 @@ app.get(`/api/search`, async (req, res) => {
   }
 });
 
+const runServer = (port) => app.listen(port);
+
 module.exports = {
   name: `--server`,
   run(args) {
     const [customPort] = args;
     const port = Number(customPort) || DEFAULT_PORT;
 
-    app.listen(port);
-  }
+    runServer(port);
+  },
+  runServer
 };
 
-app.use((req, res) => res
-  .status(HttpCode.NOT_FOUND)
-  .send(`Not found`));
+app.use((req, res) => res.status(HttpCodes.NOT_FOUND).send(`Not found`));
 
 

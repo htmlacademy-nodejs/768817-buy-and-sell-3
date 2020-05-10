@@ -14,7 +14,7 @@ const getElementByPropName = (propKey, propValue, arr) => {
 offersRouter.get(`/`, async (req, res) => {
   try {
     const mocks = await getMocks();
-    res.json(mocks);
+    res.status(200).json(mocks);
   } catch (err) {
     res.json([]);
   }
@@ -25,7 +25,7 @@ offersRouter.get(`/:offerId`, async (req, res) => {
     const mocks = await getMocks();
     const offerId = req.params.offerId;
     const offer = find(propEq(`id`, offerId))(mocks);
-    res.json(offer);
+    res.status(200).json(offer);
   } catch (err) {
     res.json([]);
   }
@@ -34,7 +34,6 @@ offersRouter.get(`/:offerId`, async (req, res) => {
 offersRouter.post(`/`, (req, res) => {
   const {category, description, title, type, sum} = req.body;
   if (any(isNil)([category, description, title, type, sum])) {
-    console.log(req.body);
     return res.status(400).send({ok: false});
   }
 

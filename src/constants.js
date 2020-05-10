@@ -5,10 +5,20 @@ const FILE_CATEGORIES_PATH = `./src/data/categories.txt`;
 const FILE_COMMENTS_PATH = `./src/data/comments.txt`;
 const FILENAME_MOCS = `mocks.json`;
 
+const HttpCodes = {
+  OK: 200,
+  NOT_FOUND: 404,
+  INTERNAL_SERVER_ERROR: 500,
+  FORBIDDEN: 403,
+  UNAUTHORIZED: 401,
+  BAD_REQUEST: 400,
+};
+
 module.exports = {
   FILE_CATEGORIES_PATH,
   FILE_COMMENTS_PATH,
   FILE_SENTENCES_PATH,
   FILE_TITLE_PATH,
-  FILENAME_MOCS
+  FILENAME_MOCS,
+  HttpCodes
 };
