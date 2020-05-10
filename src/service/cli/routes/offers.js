@@ -24,10 +24,10 @@ offersRouter.get(`/:offerId`, async (req, res) => {
   try {
     const mocks = await getMocks();
     const offerId = req.params.offerId;
-    const offer = find(propEq(`id`, offerId))(mocks);
+    const offer = find(propEq(`id`, offerId))(mocks) || {};
     res.status(200).json(offer);
   } catch (err) {
-    res.json([]);
+    res.status(400).json({});
   }
 });
 
@@ -75,7 +75,6 @@ offersRouter.delete(`/:offerId/comments/:commentId`, async (req, res) => {
     if (!includes(commentId, commentIds)) {
       return res.status(400).send(`your commentId does not match to any of commentIds of this offer`);
     }
-    console.log(commentIds);
     const editedOffer = offer.comments.filter((item) => item.id !== commentId);
 
     return res.status(200).json(editedOffer);
@@ -95,7 +94,6 @@ offersRouter.post(`/:offerId/comments`, async (req, res) => {
     };
     const editedOffer = offer.comments.concat(newComment);
 
-    console.log(editedOffer);
     return res.status(200).json(editedOffer);
   } catch (err) {
     return res.status(400).json([]);
