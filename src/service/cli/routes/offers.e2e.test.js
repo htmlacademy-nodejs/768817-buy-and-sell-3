@@ -1,10 +1,36 @@
 'use strict';
-
-const {app} = require(`../server`);
+const fs = require(`fs`).promises;
 const request = require(`supertest`);
 
+const {app} = require(`../server`);
+const FILE_NAME = `mocks.json`;
 
 describe(`offers api end-points`, () => {
+  beforeAll(async (done) => {
+    const content = JSON.stringify([{
+      id: `10`,
+      category: [`a`, `b`, `c`],
+      title: `aaa`,
+      type: `sale`,
+      sum: 123,
+      comments: [
+        {
+          id: `20`,
+          text: `zzz`,
+        },
+        {
+          id: `22`,
+          text: `zzzzddzz`
+        }
+      ]
+    }]);
+    await fs.writeFile(FILE_NAME, content);
+    done();
+  });
+  afterAll(async (done) => {
+    await fs.writeFile(FILE_NAME, {});
+    done();
+  });
   test(`should have code status 200 and send array, when calling GET /api/offers`, async (done) => {
     const res = await request(app).get(`/api/offers/`);
     expect(res.statusCode).toBe(200);
@@ -13,7 +39,7 @@ describe(`offers api end-points`, () => {
   });
 
   test(`should send status 200 and offer with id`, async (done) => {
-    const res = await request(app).get(`/api/offers/FKqI2s`);
+    const res = await request(app).get(`/api/offers/10`);
     expect(res.statusCode).toBe(200);
     expect(res.body).toHaveProperty(`id`);
 
@@ -38,7 +64,7 @@ describe(`offers api end-points`, () => {
     done();
   });
 
-  test(`should send status 200, on PUT api/offers/:offerId`, async (done) => {
+  test(`should send status 200, on PUT api/offers/10`, async (done) => {
     const res = await request(app)
       .put(`/api/offers/FKqI2s`)
       .send({category: `aaa`, description: `bbb`, title: `ccc`, type: `ddd`, sum: 123});
@@ -58,7 +84,7 @@ describe(`offers api end-points`, () => {
   });
 
   test(`should send status 200, on DELETE api/offers/:offerId`, async (done) => {
-    const res = await request(app).delete(`/api/offers/FKqI2s`);
+    const res = await request(app).delete(`/api/offers/10`);
     expect(res.statusCode).toBe(200);
     expect(res.body).toEqual({ok: true});
 
@@ -66,21 +92,21 @@ describe(`offers api end-points`, () => {
   });
 
   test(`should have code status 200 and send array, when calling GET /api/offers/:offerId/comments`, async (done) => {
-    const res = await request(app).get(`/api/offers/FKqI2s/comments`);
+    const res = await request(app).get(`/api/offers/10/comments`);
     expect(res.statusCode).toBe(200);
     expect(res.body).toEqual(expect.arrayContaining([]));
     done();
   });
 
   test(`should have code status 200 and send object, when calling DELETE /api/offers/:offerId/comments/commentId`, async (done) => {
-    const res = await request(app).delete(`/api/offers/eYf1UG/comments/P04WSc`);
+    const res = await request(app).delete(`/api/offers/10/comments/20`);
     expect(res.statusCode).toBe(200);
     expect(res.body).toEqual(expect.objectContaining({}));
     done();
   });
 
   test(`should have code status 200 and send object, when calling POST /api/offers/:offerId/comments`, async (done) => {
-    const res = await request(app).post(`/api/offers/FKqI2s/comments`);
+    const res = await request(app).post(`/api/offers/10/comments`);
     expect(res.statusCode).toBe(200);
     expect(res.body).toEqual(expect.objectContaining([]));
     done();

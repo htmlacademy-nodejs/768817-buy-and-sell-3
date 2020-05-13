@@ -26,7 +26,7 @@ module.exports.readContent = async (filePath) => {
   }
 };
 
-module.exports.getMocks = async () => {
+module.exports.getData = async () => {
   const content = await fs.readFile(FILENAME_MOCS);
   return JSON.parse(content);
 };

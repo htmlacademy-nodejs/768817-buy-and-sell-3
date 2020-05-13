@@ -4,7 +4,7 @@ const express = require(`express`);
 const {keys, includes} = require(`ramda`);
 const logger = require(`pino`)({
   name: `pino-and-express`,
-  level: process.env.LOG_LEVEL || `debug`,
+  level: process.env.LOG_LEVEL || `info`,
 });
 
 logger.info(`Hello, world!`);
@@ -12,7 +12,7 @@ logger.warn(`Test warning`);
 logger.error(`Add error`);
 
 const offersRouter = require(`./routes/offers`);
-const {readContent, getMocks} = require(`../../utils`);
+const {readContent, getData} = require(`../../utils`);
 const {FILE_CATEGORIES_PATH, HttpCodes} = require(`../../constants`);
 
 const DEFAULT_PORT = 3000;
@@ -31,15 +31,15 @@ app.get(`/api/categories`, async (req, res) => {
   try {
     const categories = await readContent(FILE_CATEGORIES_PATH);
     logger.info(`End request with status code ${res.statusCode}`);
-    return res.status(200).json(categories);
+    return res.status(HttpCodes.OK).json(categories);
   } catch (err) {
-    return res.status(400).json([]);
+    return res.status(HttpCodes.BAD_REQUEST).json([]);
   }
 });
 
 app.get(`/api/search`, async (req, res) => {
   try {
-    const mocks = await getMocks();
+    const mocks = await getData();
     const queryParams = req.query;
     const queryKeys = keys(queryParams);
 
@@ -49,9 +49,9 @@ app.get(`/api/search`, async (req, res) => {
       let currentParam = queryKeys[i];
       filteredMocks = a.filter((item) => includes(queryParams[currentParam], item[currentParam]));
     }
-    return res.status(200).json(filteredMocks);
+    return res.status(HttpCodes.OK).json(filteredMocks);
   } catch (err) {
-    return res.status(400).json(`try again`);
+    return res.status(HttpCodes.BAD_REQUEST).json({});
   }
 });
 
