@@ -4,6 +4,7 @@ const request = require(`supertest`);
 
 const {app} = require(`../server`);
 const FILE_NAME = `mocks.json`;
+const {HttpCodes} = require(`../../../constants`);
 
 describe(`offers api end-points`, () => {
   beforeAll(async (done) => {
@@ -27,20 +28,17 @@ describe(`offers api end-points`, () => {
     await fs.writeFile(FILE_NAME, content);
     done();
   });
-  afterAll(async (done) => {
-    await fs.writeFile(FILE_NAME, {});
-    done();
-  });
+
   test(`should have code status 200 and send array, when calling GET /api/offers`, async (done) => {
     const res = await request(app).get(`/api/offers/`);
-    expect(res.statusCode).toBe(200);
+    expect(res.statusCode).toBe(HttpCodes.OK);
     expect(res.body).toEqual(expect.arrayContaining([]));
     done();
   });
 
   test(`should send status 200 and offer with id`, async (done) => {
     const res = await request(app).get(`/api/offers/10`);
-    expect(res.statusCode).toBe(200);
+    expect(res.statusCode).toBe(HttpCodes.OK);
     expect(res.body).toHaveProperty(`id`);
 
     done();
@@ -48,7 +46,7 @@ describe(`offers api end-points`, () => {
 
   test(`should send status 200 and {} if there is no offer with given id`, async (done) => {
     const res = await request(app).get(`/api/offers/33`);
-    expect(res.statusCode).toBe(200);
+    expect(res.statusCode).toBe(HttpCodes.OK);
     expect(res.body).toEqual({});
 
     done();
@@ -58,7 +56,7 @@ describe(`offers api end-points`, () => {
     const res = await request(app)
       .post(`/api/offers`)
       .send({category: `aaa`, description: `bbb`, title: `ccc`, type: `ddd`, sum: 123});
-    expect(res.statusCode).toBe(200);
+    expect(res.statusCode).toBe(HttpCodes.OK);
     expect(res.body).toEqual({ok: true});
 
     done();
@@ -68,7 +66,7 @@ describe(`offers api end-points`, () => {
     const res = await request(app)
       .put(`/api/offers/FKqI2s`)
       .send({category: `aaa`, description: `bbb`, title: `ccc`, type: `ddd`, sum: 123});
-    expect(res.statusCode).toBe(200);
+    expect(res.statusCode).toBe(HttpCodes.OK);
     expect(res.body).toEqual({ok: true});
 
     done();
@@ -78,14 +76,14 @@ describe(`offers api end-points`, () => {
     const res = await request(app)
       .put(`/api/offers/`)
       .send({category: `aaa`, description: `bbb`, title: `ccc`, type: `ddd`, sum: 123});
-    expect(res.statusCode).toBe(404);
+    expect(res.statusCode).toBe(HttpCodes.NOT_FOUND);
 
     done();
   });
 
   test(`should send status 200, on DELETE api/offers/:offerId`, async (done) => {
     const res = await request(app).delete(`/api/offers/10`);
-    expect(res.statusCode).toBe(200);
+    expect(res.statusCode).toBe(HttpCodes.OK);
     expect(res.body).toEqual({ok: true});
 
     done();
@@ -93,21 +91,21 @@ describe(`offers api end-points`, () => {
 
   test(`should have code status 200 and send array, when calling GET /api/offers/:offerId/comments`, async (done) => {
     const res = await request(app).get(`/api/offers/10/comments`);
-    expect(res.statusCode).toBe(200);
+    expect(res.statusCode).toBe(HttpCodes.OK);
     expect(res.body).toEqual(expect.arrayContaining([]));
     done();
   });
 
   test(`should have code status 200 and send object, when calling DELETE /api/offers/:offerId/comments/commentId`, async (done) => {
     const res = await request(app).delete(`/api/offers/10/comments/20`);
-    expect(res.statusCode).toBe(200);
+    expect(res.statusCode).toBe(HttpCodes.OK);
     expect(res.body).toEqual(expect.objectContaining({}));
     done();
   });
 
   test(`should have code status 200 and send object, when calling POST /api/offers/:offerId/comments`, async (done) => {
     const res = await request(app).post(`/api/offers/10/comments`);
-    expect(res.statusCode).toBe(200);
+    expect(res.statusCode).toBe(HttpCodes.OK);
     expect(res.body).toEqual(expect.objectContaining([]));
     done();
   });

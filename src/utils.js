@@ -22,7 +22,7 @@ module.exports.readContent = async (filePath) => {
     const content = await fs.readFile(filePath, `utf8`);
     return content.split(`\n`);
   } catch (err) {
-    return console.log(err);
+    return console.error(err);
   }
 };
 

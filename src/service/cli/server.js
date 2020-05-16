@@ -33,7 +33,7 @@ app.get(`/api/categories`, async (req, res) => {
     logger.info(`End request with status code ${res.statusCode}`);
     return res.status(HttpCodes.OK).json(categories);
   } catch (err) {
-    return res.status(HttpCodes.BAD_REQUEST).json([]);
+    return res.status(HttpCodes.INTERNAL_SERVER_ERROR).json([]);
   }
 });
 
@@ -42,6 +42,9 @@ app.get(`/api/search`, async (req, res) => {
     const mocks = await getData();
     const queryParams = req.query;
     const queryKeys = keys(queryParams);
+    if (!queryParams) {
+      return res.status(HttpCodes.BAD_REQUEST);
+    }
 
     let filteredMocks = mocks;
     for (let i = 0; i < queryKeys.length; i++) {
@@ -51,7 +54,7 @@ app.get(`/api/search`, async (req, res) => {
     }
     return res.status(HttpCodes.OK).json(filteredMocks);
   } catch (err) {
-    return res.status(HttpCodes.BAD_REQUEST).json({});
+    return res.status(HttpCodes.INTERNAL_SERVER_ERROR).json({});
   }
 });
 

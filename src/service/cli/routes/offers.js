@@ -28,7 +28,7 @@ offersRouter.get(`/:offerId`, async (req, res) => {
     const offer = find(propEq(`id`, offerId))(mocks) || {};
     res.status(HttpCodes.OK).json(offer);
   } catch (err) {
-    res.status(HttpCodes.BAD_REQUEST).json({});
+    res.status(HttpCodes.INTERNAL_SERVER_ERROR).json({});
   }
 });
 
@@ -59,11 +59,9 @@ offersRouter.get(`/:offerId/comments`, async (req, res) => {
     const mocks = await getData();
     const offer = getElementByPropName(`id`, offerId, mocks);
     const comments = offer.comments || [];
-
     return res.status(HttpCodes.OK).json(comments);
   } catch (err) {
-    res.status(HttpCodes.BAD_REQUEST);
-    return res.json([]);
+    return res.status(HttpCodes.INTERNAL_SERVER_ERROR).json([]);
   }
 });
 
@@ -80,7 +78,7 @@ offersRouter.delete(`/:offerId/comments/:commentId`, async (req, res) => {
 
     return res.status(HttpCodes.OK).json(editedOffer);
   } catch (err) {
-    return res.status(HttpCodes.BAD_REQUEST).json({});
+    return res.status(HttpCodes.INTERNAL_SERVER_ERROR).json({});
   }
 });
 
@@ -97,7 +95,7 @@ offersRouter.post(`/:offerId/comments`, async (req, res) => {
 
     return res.status(HttpCodes.OK).json(editedOffer);
   } catch (err) {
-    return res.status(HttpCodes.BAD_REQUEST).json([]);
+    return res.status(HttpCodes.INTERNAL_SERVER_ERROR).json([]);
   }
 });
 
