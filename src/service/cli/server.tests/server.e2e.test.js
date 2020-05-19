@@ -1,31 +1,13 @@
 'use strict';
-const FILE_NAME = `mocks.json`;
-const fs = require(`fs`).promises;
-
 const {app} = require(`../server`);
 const request = require(`supertest`);
 const {HttpCodes} = require(`../../../constants`);
+const {run} = require(`../generate`);
 
 describe(`server api end-points`, () => {
   beforeAll(async (done) => {
-    const content = JSON.stringify([{
-      id: `10`,
-      category: [`a`, `b`, `c`],
-      title: `aaa`,
-      type: `sale`,
-      sum: 123,
-      comments: [
-        {
-          id: `20`,
-          text: `zzz`,
-        },
-        {
-          id: `22`,
-          text: `zzzzddzz`
-        }
-      ]
-    }]);
-    await fs.writeFile(FILE_NAME, content);
+    const preventExit = true;
+    await run([1, preventExit]);
     done();
   });
   test(`should have code status 200, when calling GET /api/categories`, async (done) => {

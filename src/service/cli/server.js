@@ -13,7 +13,7 @@ logger.error(`Add error`);
 
 const offersRouter = require(`./routes/offers`);
 const {readContent, getData} = require(`../../utils`);
-const {FILE_CATEGORIES_PATH, HttpCodes} = require(`../../constants`);
+const {FILE_CATEGORIES_PATH, HttpCodes, FILENAME_MOCKS} = require(`../../constants`);
 
 const DEFAULT_PORT = 3000;
 
@@ -39,7 +39,7 @@ app.get(`/api/categories`, async (req, res) => {
 
 app.get(`/api/search`, async (req, res) => {
   try {
-    const mocks = await getData();
+    const mocks = await getData(FILENAME_MOCKS);
     const queryParams = req.query;
     const queryKeys = keys(queryParams);
     if (!queryParams) {

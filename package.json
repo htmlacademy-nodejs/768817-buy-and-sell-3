@@ -8,7 +8,8 @@
     "start::debug": "set LOG_LEVEL=debug && nodemon ./src/service/service.js --server",
     "server": "nodemon ./src/service/service.js --server",
     "start-front-server": "nodemon ./src/express/index.js",
-    "test": "jest --colors",
+    "test": "npm run test::rest",
+    "test::rest": "jest --colors",
     "eslint": "eslint --ext .js src/"
   },
   "repository": {
