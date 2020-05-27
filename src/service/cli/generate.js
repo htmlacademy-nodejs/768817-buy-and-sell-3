@@ -54,7 +54,7 @@ const generateOffers = (count, titles, categories, sentences, comments) => (
 module.exports = {
   name: `--generate`,
   async run(args) {
-    const [count] = args;
+    const [count, preventExit] = args;
     if (count > MAX_OFFERS_COUNT) {
       console.error(chalk.red(`Не больше 1000 объявлений`));
       process.exit(1);
@@ -68,7 +68,9 @@ module.exports = {
     try {
       await fs.writeFile(FILE_NAME, content);
       console.info(chalk.green(`Operation success. File created.`));
-      process.exit(0);
+      if (!preventExit) {
+        process.exit(0);
+      }
     } catch (err) {
       console.error(chalk.red(`Can't write data to file...`));
       process.exit(1);
