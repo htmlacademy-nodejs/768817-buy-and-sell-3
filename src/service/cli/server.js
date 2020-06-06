@@ -2,20 +2,14 @@
 
 const express = require(`express`);
 const {keys, includes} = require(`ramda`);
-const logger = require(`pino`)({
-  name: `pino-and-express`,
-  level: process.env.LOG_LEVEL || `info`,
-});
 
-logger.info(`Hello, world!`);
-logger.warn(`Test warning`);
-logger.error(`Add error`);
-
-const offersRouter = require(`./routes/offers`);
+const {getLogger} = require(`../../logger`);
 const {readContent, getData} = require(`../../utils`);
-const {FILE_CATEGORIES_PATH, HttpCodes, FILENAME_MOCKS} = require(`../../constants`);
+const {FILE_CATEGORIES_PATH, HttpCodes, FILENAME_MOCKS, API_PREFIX} = require(`../../constants`);
+const routes = require(`./routes/api`);
 
 const DEFAULT_PORT = 3000;
+const logger = getLogger();
 
 const app = express();
 
@@ -25,9 +19,10 @@ app.use((req, res, next) => {
 });
 
 app.use(express.json());
-app.use(`/api/offers`, offersRouter);
+app.use(API_PREFIX, routes);
 
 app.get(`/api/categories`, async (req, res) => {
+  logger.info(`End request with status code ${res.statusCode}`);
   try {
     const categories = await readContent(FILE_CATEGORIES_PATH);
     logger.info(`End request with status code ${res.statusCode}`);
@@ -38,6 +33,7 @@ app.get(`/api/categories`, async (req, res) => {
 });
 
 app.get(`/api/search`, async (req, res) => {
+  logger.info(`End request with status code ${res.statusCode}`);
   try {
     const mocks = await getData(FILENAME_MOCKS);
     const queryParams = req.query;
@@ -65,7 +61,7 @@ module.exports = {
     const port = Number(customPort) || DEFAULT_PORT;
 
     app.listen(port, () => {
-      logger.info(`Start server on port ${port}`);
+      logger.info(`Starts SERVICE server on: localhost:${port}`);
     }).on(`error`, (err) => {
       logger.error(`Cannot start server. Error: ${err}`);
     });

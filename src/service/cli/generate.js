@@ -21,7 +21,6 @@ const OfferType = {
   sale: `sale`,
 };
 
-
 const SumRestrict = {
   min: 1000,
   max: 100000,
