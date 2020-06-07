@@ -14,7 +14,8 @@ module.exports = (app, offerService, commentService) => {
 
   route.get(`/`, (req, res) => {
     logger.info(`End request with status code ${res.statusCode}`);
-    const offers = offerService.findAll();
+    const {size = null} = req.query;
+    const offers = size ? offerService.findSeveral(size) : offerService.findAll();
 
     res.status(HttpCodes.OK).json(offers);
   });

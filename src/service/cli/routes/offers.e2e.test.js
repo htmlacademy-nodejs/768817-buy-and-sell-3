@@ -36,12 +36,12 @@ describe(`offers api end-points`, () => {
     done();
   });
 
-  test(`POST api/offers/ should return: 200`, async (done) => {
+  test(`POST api/offers/ should return: 201`, async (done) => {
     const res = await request(app)
       .post(`/api/offers`)
       .send({category: `aaa`, description: `bbb`, title: `ccc`, type: `ddd`, sum: 123});
-    expect(res.statusCode).toBe(HttpCodes.OK);
-    expect(res.body).toEqual({ok: true});
+    expect(res.statusCode).toBe(HttpCodes.CREATED);
+    expect(res.body).toHaveProperty(`id`);
 
     done();
   });
@@ -86,7 +86,6 @@ describe(`offers api end-points`, () => {
   test(`POST /api/offers/:offerId/comments should return: 200 and Object`, async (done) => {
     const mockId = mocks[0].id;
     const res = await request(app).post(`/api/offers/${mockId}/comments`);
-    console.log(res);
     expect(res.statusCode).toBe(HttpCodes.OK);
     expect(res.body).toEqual(expect.objectContaining([]));
     done();

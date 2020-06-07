@@ -6,12 +6,12 @@ const BASE_URL_SERVICE = `http://localhost:3000/`;
 // SERVICE ENDPOINTS
 const offersList = `api/offers/`;
 const offerItem = (offerId) => `api/offers/${offerId}`;
-const search = `api/search`;
+const searching = `api/search/`;
 
 module.exports = {
   offersList,
   offerItem,
-  search,
+  searching,
   BASE_URL_EXPRESS,
   BASE_URL_SERVICE
 };

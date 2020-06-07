@@ -5,8 +5,8 @@ class SearchService {
     this._offers = offers;
   }
 
-  findAll(query) {
-    return this._offers.filter((item) => item.title.includes(query));
+  findAll(searchText) {
+    return this._offers.filter((item) => item.title.includes(searchText));
   }
 }
 

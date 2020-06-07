@@ -15,6 +15,10 @@ class OfferCategory {
     return this._offers.find((item) => item.id === id);
   }
 
+  findSeveral(count) {
+    return this._offers.slice(0, Number(count));
+  }
+
   create(offer) {
     const newOffer = Object.assign({id: nanoid(MAX_ID_LENGTH), comments: []}, offer);
     this._offers.push(newOffer);
