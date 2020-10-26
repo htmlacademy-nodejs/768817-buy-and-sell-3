@@ -1,5 +1,5 @@
 'use strict';
-const request = require(`request-promise-native`);
+
 const {Router} = require(`express`);
 const multer = require(`multer`);
 const path = require(`path`);

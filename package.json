@@ -4,10 +4,10 @@
   "description": "Куплю. Продам.",
   "main": "./src/service/service.js",
   "scripts": {
-    "start": "cross-env LOG_LEVEL=error node ./src/service/service.js",
-    "start::debug": "cross-env LOG_LEVEL=debug npm run server",
+    "start": "cross-env NODE_ENV=production node ./src/service/service.js",
+    "start::debug": "cross-env NODE_ENV=development npm run server",
     "server": "nodemon ./src/service/service.js --server",
-    "start-front-server": "nodemon ./src/express/index.js",
+    "start-front-server": "cross-env NODE_ENV=development nodemon ./src/express/index.js",
     "jest": "jest",
     "test": "npm run eslint && npm run jest",
     "test::rest": "jest --colors",
@@ -33,6 +33,7 @@
     "supertest": "4.0.2"
   },
   "dependencies": {
+    "axios": "^0.21.0",
     "chalk": "3.0.0",
     "cross-env": "7.0.2",
     "express": "4.17.1",
@@ -40,8 +41,6 @@
     "nanoid": "3.1.3",
     "pino": "6.2.1",
     "pug": "2.0.4",
-    "ramda": "0.27.0",
-    "request": "2.88.2",
-    "request-promise-native": "1.0.8"
+    "ramda": "0.27.0"
   }
 }

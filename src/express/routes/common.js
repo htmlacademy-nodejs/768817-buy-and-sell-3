@@ -1,16 +1,18 @@
 'use strict';
 const {isEmpty} = require(`ramda`);
 const {Router} = require(`express`);
-const request = require(`request-promise-native`);
+const {getAPI} = require(`../api`);
 
 const {BASE_URL_SERVICE, offersList, searching} = require(`../../endPoints`);
 
 const commonRouter = new Router();
+const api = getAPI();
 
 commonRouter.get(`/`, async (req, res) => {
   let offers = [];
   try {
-    offers = await request(`${BASE_URL_SERVICE + offersList}`, {json: true});
+    offers = await api.getOffers();
+    console.log(`offers`, offers);
     return res.render(`main`, {offers});
   } catch (err) {
     console.error(`error:`, err);

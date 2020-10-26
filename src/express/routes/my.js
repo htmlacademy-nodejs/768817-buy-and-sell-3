@@ -1,7 +1,7 @@
 'use strict';
 
 const {Router} = require(`express`);
-const request = require(`request-promise-native`);
+
 const {concat} = require(`ramda`);
 
 const {BASE_URL_SERVICE, offersList} = require(`../../endPoints`);
