@@ -18,6 +18,11 @@ const HttpCodes = {
 
 const MAX_ID_LENGTH = 6;
 
+const Env = {
+  DEVELOPMENT: `development`,
+  PRODUCTION: `production`
+};
+
 module.exports = {
   FILE_CATEGORIES_PATH,
   FILE_COMMENTS_PATH,
@@ -26,5 +31,6 @@ module.exports = {
   FILENAME_MOCKS,
   API_PREFIX,
   MAX_ID_LENGTH,
-  HttpCodes
+  HttpCodes,
+  Env
 };

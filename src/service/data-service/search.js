@@ -11,5 +11,3 @@ class SearchService {
 }
 
 module.exports = SearchService;
-
-

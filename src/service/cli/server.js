@@ -36,7 +36,19 @@ module.exports = {
 
 app.use((req, res) => {
   res.status(HttpCodes.NOT_FOUND).send(`Not found`);
-  logger.error(`End request with error ${res.statusCode}`);
+  logger.error(`Route not found: ${req.url}`);
+});
+
+app.use((err, _req, _res, _next) => {
+  logger.error(`An error occured on processing request: ${err.message}`);
+});
+
+app.use((req, res, next) => {
+  logger.debug(`Request on route ${req.url}`);
+  res.on(`finish`, () => {
+    logger.info(`Response status code ${res.statusCode}`);
+  });
+  next();
 });
 
 
