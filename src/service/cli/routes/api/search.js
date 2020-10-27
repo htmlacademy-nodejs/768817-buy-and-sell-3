@@ -9,12 +9,12 @@ module.exports = (app, service) => {
 
   route.get(`/`, (req, res) => {
     const {search = ``} = req.query;
+    console.log(`search`, search);
+
     if (!search) {
       return res.status(HttpCodes.BAD_REQUEST).send([]);
     }
-
     const result = service.findAll(search);
-    const status = result.length > 0 ? HttpCodes.OK : HttpCodes.NOT_FOUND;
-    return res.status(status).json(result);
+    return res.status(HttpCodes.OK).json(result);
   });
 };

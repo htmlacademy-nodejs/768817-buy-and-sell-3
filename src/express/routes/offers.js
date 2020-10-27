@@ -3,27 +3,38 @@
 const {Router} = require(`express`);
 const multer = require(`multer`);
 const path = require(`path`);
+const {nanoid} = require(`nanoid`);
 
-const {BASE_URL_SERVICE, offerItem, offersList} = require(`../../endPoints`);
+const UPLOAD_DIR = `../upload/img/`;
+const uploadDirAbsolute = path.resolve(__dirname, UPLOAD_DIR);
+const {getAPI} = require(`../api`);
+const api = getAPI();
 
 const offersRouter = new Router();
 const storage = multer.diskStorage({
-  destination(req, file, cb) {
-    cb(null, `./avatars`);
-  },
-  filename(req, file, cb) {
-    cb(null, file.fieldname + `-` + Date.now() + path.extname(file.originalname));
+  destination: uploadDirAbsolute,
+  filename: (req, file, cb) => {
+    const uniqueName = nanoid(10);
+    const extension = file.originalname.split(`.`).pop();
+    cb(null, `${uniqueName}.${extension}`);
   }
 });
 const upload = multer({storage});
 
 offersRouter.get(`/category/:id`, (req, res) => res.render(`category`));
 offersRouter.get(`/add`, (req, res) => res.render(`./tickets/new-ticket`));
-offersRouter.post(`/add`, upload.any(), async (req, res) => {
-  const body = req.body;
-  const options = {method: `POST`, uri: `${BASE_URL_SERVICE + offersList}`, body, json: true};
+offersRouter.post(`/add`, upload.single(`avatar`), async (req, res) => {
+  const {body, file} = req;
+  const offer = {
+    picture: file.filename,
+    sum: body.price,
+    type: body.action,
+    description: body.comment,
+    title: body[`ticket-name`],
+    category: body.category
+  };
   try {
-    await request(options);
+    await api.createOffer(offer);
     return res.redirect(`/offers/my`);
   } catch (err) {
     console.error(`Error occured`, err);
@@ -35,7 +46,7 @@ offersRouter.get(`/edit/:id`, async (req, res) => {
   let offer = {};
   const offerId = req.params.id;
   try {
-    offer = await request(`${BASE_URL_SERVICE + offerItem(offerId)}`, {json: true});
+    offer = await api.getOffer(offerId);
     return res.render(`./tickets/ticket-edit`, {offer});
   } catch (err) {
     console.error(`Error:`, err);

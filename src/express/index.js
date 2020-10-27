@@ -10,6 +10,7 @@ const {getLogger} = require(`../logger`);
 
 const EXPRESS_DEFAULT_PORT = 8080;
 const PUBLIC_DIR = `public`;
+const UPLOAD_DIR = `upload`;
 
 const app = express();
 const logger = getLogger();
@@ -18,6 +19,7 @@ app.use(`/my`, myRoutes);
 app.use(`/offers`, offersRoutes);
 app.use(``, commonRoutes);
 app.use(express.static(path.resolve(__dirname, PUBLIC_DIR)));
+app.use(express.static(path.resolve(__dirname, UPLOAD_DIR)));
 
 app.set(`views`, path.join(__dirname, `templates`));
 app.set(`view engine`, `pug`);

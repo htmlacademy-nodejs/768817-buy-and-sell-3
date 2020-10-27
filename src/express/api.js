@@ -12,8 +12,8 @@ class API {
     return response.data;
   }
 
-  getOffers() {
-    return this._load(`/offers`);
+  getOffers(query = {}) {
+    return this._load(`/offers`, {params: query});
   }
 
   getOffer(id) {
@@ -21,7 +21,8 @@ class API {
   }
 
   search(query) {
-    return this._load(`/search`, {params: {query}});
+    console.log(`query`, query);
+    return this._load(`/search`, {params: query});
   }
 
   async getCategories() {
