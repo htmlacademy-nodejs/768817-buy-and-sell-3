@@ -62,7 +62,7 @@ describe(`API returns offer based on search query`, () => {
   let response;
 
   beforeAll(async () => {
-    response = await request(app).get(`/search`).query({query: `Продам отличную подборку фильмов на VHS`});
+    response = await request(app).get(`/search`).query({search: `VHS`});
   });
 
   test(`Status code 200`, () => expect(response.statusCode).toBe(HttpCodes.OK));
@@ -74,7 +74,7 @@ describe(`API returns offer based on search query`, () => {
 test(`API returns code 404 if nothing is found`,
     () => request(app)
       .get(`/search`)
-      .query({query: `Продам bmw`})
+      .query({search: `Продам bmw`})
       .expect(HttpCodes.NOT_FOUND)
 );
 
