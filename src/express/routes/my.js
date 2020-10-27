@@ -2,9 +2,11 @@
 
 const {Router} = require(`express`);
 const {concat} = require(`ramda`);
+
 const {getAPI} = require(`../api`);
+const {getLogger} = require(`../../logger`);
 
-
+const logger = getLogger();
 const myRouter = new Router();
 const api = getAPI();
 
@@ -26,7 +28,7 @@ myRouter.get(`/comments`, async (req, res) => {
     });
     return res.render(`comments`, {offers});
   } catch (err) {
-    console.error(`error`, err);
+    logger.error(`error`, err);
     return res.render(`comments`, {comments});
   }
 });

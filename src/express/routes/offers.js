@@ -1,10 +1,12 @@
 'use strict';
-
 const {Router} = require(`express`);
 const multer = require(`multer`);
 const path = require(`path`);
 const {nanoid} = require(`nanoid`);
 
+const {getLogger} = require('../../logger');
+
+const logger = getLogger();
 const UPLOAD_DIR = `../upload/img/`;
 const uploadDirAbsolute = path.resolve(__dirname, UPLOAD_DIR);
 const {getAPI} = require(`../api`);
@@ -37,7 +39,7 @@ offersRouter.post(`/add`, upload.single(`avatar`), async (req, res) => {
     await api.createOffer(offer);
     return res.redirect(`/offers/my`);
   } catch (err) {
-    console.error(`Error occured`, err);
+    logger.error(`Error occured`, err);
     return res.redirect(`back`);
   }
 });
@@ -49,7 +51,7 @@ offersRouter.get(`/edit/:id`, async (req, res) => {
     offer = await api.getOffer(offerId);
     return res.render(`./tickets/ticket-edit`, {offer});
   } catch (err) {
-    console.error(`Error:`, err);
+    logger.error(`Error:`, err);
     return res.render(`./tickets/ticket-edit`, {offer});
   }
 });
