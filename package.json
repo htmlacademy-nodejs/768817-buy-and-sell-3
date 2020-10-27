@@ -8,7 +8,7 @@
     "start::debug": "cross-env NODE_ENV=development npm run server",
     "server": "nodemon ./src/service/service.js --server",
     "start-front-server": "cross-env NODE_ENV=development nodemon ./src/express/index.js",
-    "jest": "jest",
+    "jest": "jest --colors",
     "test": "npm run eslint && npm run jest",
     "test::rest": "jest --colors",
     "eslint": "eslint --ext .js src/"

@@ -9,7 +9,6 @@ module.exports = (app, service) => {
 
   route.get(`/`, (req, res) => {
     const {search = ``} = req.query;
-    console.log(`search`, search);
 
     if (!search) {
       return res.status(HttpCodes.BAD_REQUEST).send([]);

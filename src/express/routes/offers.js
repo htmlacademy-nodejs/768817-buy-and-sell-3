@@ -4,7 +4,7 @@ const multer = require(`multer`);
 const path = require(`path`);
 const {nanoid} = require(`nanoid`);
 
-const {getLogger} = require('../../logger');
+const {getLogger} = require(`../../logger`);
 
 const logger = getLogger();
 const UPLOAD_DIR = `../upload/img/`;
@@ -55,6 +55,18 @@ offersRouter.get(`/edit/:id`, async (req, res) => {
     return res.render(`./tickets/ticket-edit`, {offer});
   }
 });
-offersRouter.get(`/:id`, (req, res) => res.render(`./tickets/ticket`));
+
+offersRouter.get(`/:id`, async (req, res) => {
+  let offer = {};
+  const offerId = req.params.id;
+  try {
+    offer = await api.getOffer(offerId);
+    return res.render(`./tickets/ticket`, {offer});
+  } catch (err) {
+    logger.error(`Error:`, err);
+    return res.render(`./tickets/ticket`, {offer});
+  }
+});
+
 
 module.exports = offersRouter;

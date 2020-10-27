@@ -5,7 +5,7 @@ const request = require(`supertest`);
 
 const search = require(`./search`);
 const DataService = require(`../../../data-service/search`);
-const {HttpCodes} = require(`../../../constants`);
+const {HttpCodes} = require(`../../../../constants`);
 
 const mockData = [{
   "id": `J7vfCs`,

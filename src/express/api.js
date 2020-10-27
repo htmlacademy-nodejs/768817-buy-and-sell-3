@@ -21,7 +21,6 @@ class API {
   }
 
   search(query) {
-    console.log(`query`, query);
     return this._load(`/search`, {params: query});
   }
 

@@ -7,9 +7,10 @@ const offerExist = require(`../../../middlewares/offer-exist`);
 const commentValidator = require(`../../../middlewares/comment-validator`);
 
 const logger = getLogger();
-const route = new Router();
+
 
 module.exports = (app, offerService, commentService) => {
+  const route = new Router();
   app.use(`/offers`, route);
 
   route.get(`/`, (req, res) => {

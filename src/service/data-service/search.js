@@ -8,7 +8,6 @@ class SearchService {
   findAll(searchText) {
     let results = [];
     this._offers.map((item) => includes(searchText, item.title) && results.push(item));
-    console.log(`results`, results);
 
     return results;
   }
