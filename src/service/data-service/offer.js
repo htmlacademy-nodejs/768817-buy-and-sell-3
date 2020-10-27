@@ -8,7 +8,6 @@ class OfferService {
   }
 
   findAll() {
-    console.log(`this.offers`, this._offers);
     return this._offers;
   }
 

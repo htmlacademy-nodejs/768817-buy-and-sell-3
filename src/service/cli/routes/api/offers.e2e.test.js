@@ -1,9 +1,10 @@
 'use strict';
+
 const request = require(`supertest`);
 const express = require(`express`);
 
 const {HttpCodes} = require(`../../../../constants`);
-const DataService = require(`../../../data-service/search`);
+const DataService = require(`../../../data-service/offer`);
 const CommentService = require(`../../../data-service/comment`);
 
 const offer = require(`./offer`);
@@ -258,9 +259,6 @@ describe(`API returns a list of all offers`, () => {
       .get(`/offers`);
   });
 
-  console.log(`response`, response);
-
-
   test(`Status code 200`, () => expect(response.statusCode).toBe(HttpCodes.OK));
   test(`Returns a list of 10 offers`, () => expect(response.body.length).toBe(10));
   test(`First offer's id equals "J7vfCs"`, () => expect(response.body[0].id).toBe(`J7vfCs`));
@@ -309,7 +307,7 @@ describe(`API creates an offer if data is valid`, () => {
 
   test(`Offers count is changed`, () => request(app)
     .get(`/offers`)
-    .expect((res) => expect(res.body.length).toBe(6))
+    .expect((res) => expect(res.body.length).toBe(11))
   );
 
 });
@@ -329,7 +327,7 @@ describe(`API refuses to create an offer if data is invalid`, () => {
 
   test(`Without any required property response code is 400`, async () => {
     for (const key of Object.keys(newOffer)) {
-      const badOffer = {...newOffer};
+      let badOffer = {...newOffer};
       delete badOffer[key];
       await request(app)
         .post(`/offers`)

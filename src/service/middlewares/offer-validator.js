@@ -1,7 +1,14 @@
 'use strict';
 const {HttpCodes} = require(`../../constants`);
 
-const requiredKeys = [`category`, `description`, `title`, `type`, `sum`];
+const requiredKeys = [
+  `category`,
+  `picture`,
+  `description`,
+  `title`,
+  `type`,
+  `sum`
+];
 
 module.exports = (req, res, next) => {
   const newOffer = req.body;

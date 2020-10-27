@@ -36,7 +36,7 @@ class API {
   }
 }
 
-const TIMEOUT = 10000;
+const TIMEOUT = 5000;
 
 const port = process.env.API_PORT || 3000;
 const defaultUrl = `http://localhost:${port}/api/`;
