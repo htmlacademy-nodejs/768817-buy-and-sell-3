@@ -90,8 +90,8 @@ describe(`API returns category list`, () => {
   beforeAll(async () => {
     response = await request(app)
       .get(`/category`);
+
   });
-  console.log(`response`, response);
   test(`Status code 200`, () => expect(response.statusCode).toBe(HttpCodes.OK));
   test(`Returns list of 3 categories`, () => expect(response.body.length).toBe(3));
 

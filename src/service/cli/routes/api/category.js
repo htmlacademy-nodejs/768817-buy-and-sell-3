@@ -9,7 +9,6 @@ module.exports = (app, service) => {
 
   route.get(`/`, (req, res) => {
     const categories = service.findAll();
-    console.log(`categories`, categories);
     return res.status(HttpCodes.OK).json(categories);
   });
 };
