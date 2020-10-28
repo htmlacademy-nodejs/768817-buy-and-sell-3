@@ -4,7 +4,7 @@ const express = require(`express`);
 const request = require(`supertest`);
 
 const category = require(`./category`);
-const CategoryService = require(`../../../data-service/category`);
+const DataService = require(`../../../data-service/category`);
 const {HttpCodes} = require(`../../../../constants`);
 
 const mockData = [{
@@ -81,7 +81,7 @@ const mockData = [{
 
 const app = express();
 app.use(express.json());
-category(app, new CategoryService(mockData));
+category(app, new DataService(mockData));
 
 describe(`API returns category list`, () => {
 
@@ -91,14 +91,12 @@ describe(`API returns category list`, () => {
     response = await request(app)
       .get(`/category`);
   });
-
+  console.log(`response`, response);
   test(`Status code 200`, () => expect(response.statusCode).toBe(HttpCodes.OK));
   test(`Returns list of 3 categories`, () => expect(response.body.length).toBe(3));
 
-  test(`Category names are "Книги", "Посуда", "Разное"`,
-      () => expect(response.body).toEqual(
-          expect.arrayContaining([`Книги`, `Посуда`, `Разное`])
-      )
-  );
+  test(`Category names are "Книги", "Посуда", "Разное"`, () => {
+    expect(response.body).toEqual(expect.arrayContaining([`Книги`, `Посуда`, `Разное`]));
+  });
 
 });
