@@ -21,7 +21,6 @@ const OfferType = {
   sale: `sale`,
 };
 
-
 const SumRestrict = {
   min: 1000,
   max: 100000,
@@ -32,7 +31,7 @@ const PictureRestrict = {
   max: 16,
 };
 
-const getPictureFileName = (number) => number > 10 ? `item${number}.jpg` : `item0${number}.jpg`;
+const getPictureFileName = (number) => number >= 10 ? `item${number}.jpg` : `item0${number}.jpg`;
 const getComment = (comments) => {
   const count = getRandomInt(0, comments.length - 1);
   return shuffle(comments).slice(1, count).join(` `);

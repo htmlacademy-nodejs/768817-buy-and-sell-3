@@ -1,6 +1,9 @@
 'use strict';
 const fs = require(`fs`).promises;
 const {FILENAME_MOCKS} = require(`./constants`);
+const {getLogger} = require(`./logger`);
+
+const logger = getLogger();
 
 module.exports.getRandomInt = (min, max) => {
   min = Math.ceil(min);
@@ -22,7 +25,7 @@ module.exports.readContent = async (filePath) => {
     const content = await fs.readFile(filePath, `utf8`);
     return content.split(`\n`);
   } catch (err) {
-    return console.error(err);
+    return logger.error(err);
   }
 };
 
